@@ -6,7 +6,7 @@ import (
 )
 
 func get_location_in_grid(x, y float64) (a, b, c, d float64) {
-	gridsize := 160.0
+	gridsize := 400.0
 
 	// get the grid index
 	gridx := math.Floor(x / gridsize)
@@ -93,4 +93,21 @@ func get_gradient(x, y float64) rl.Vector2 {
 	//	}
 	//
 	// return rl.Vector2{X: float32(xdir), Y: float32(ydir)}
+}
+
+func perlin_octaves(x, y float64, n int) float64 {
+	val := 0.0
+	freq := 1.0
+	amplitude := 1.0
+	tot_amp := 0.0
+	for range n {
+		//val += (250 * (perlin(x*math.Pow(float64(1+i), 2),
+		//y*math.Pow(float64(1+i), 2)) + 2) / 4) * (1 / math.Pow(float64(1+i), 2))
+		val += amplitude * (0.5 + 0.5*(perlin(x*freq, y*freq)/0.60722))
+		tot_amp += amplitude
+		freq *= 2
+		amplitude /= 2
+	}
+
+	return 200 * val / tot_amp
 }

@@ -19,11 +19,13 @@ func main() {
 	rl.InitWindow(int32(width), int32(height), "perlin noise")
 	defer rl.CloseWindow()
 
-	scale := 8
+	scale := 16
 	scaled_width := width / scale
 	scaled_height := height / scale
 
 	rl.SetTargetFPS(60)
+	min_val := 99999.0
+	max_val := 0.0
 
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()
@@ -43,8 +45,15 @@ func main() {
 		//		}
 		for ix := range scaled_width {
 			for iy := range scaled_height {
-				val := 250 * (perlin(float64(ix*scale), float64(iy*scale)) + 2) / 4
+				//				val := 250 * (perlin(float64(ix*scale), float64(iy*scale)) + 2) / 4
+				val := perlin_octaves(float64(ix*scale), float64(iy*scale), 4)
 				//				fmt.Println(val)
+				if val < min_val {
+					min_val = val
+				}
+				if val > max_val {
+					max_val = val
+				}
 				col := color.RGBA{uint8(val), uint8(val), uint8(val), 255}
 				//				rl.DrawPixel(int32(ix), int32(iy), col)
 				rl.DrawRectangle(int32(ix*scale), int32(iy*scale),
@@ -55,4 +64,5 @@ func main() {
 		rl.DrawText(my_string, 40, 40, 32, rl.Black)
 		rl.EndDrawing()
 	}
+	fmt.Println(min_val, max_val)
 }
