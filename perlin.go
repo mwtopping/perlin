@@ -60,7 +60,7 @@ func smooth(val float64) float64 {
 
 func get_gradient(x, y float64) rl.Vector2 {
 
-	// ensure values are correct
+	// ensure values are correct type
 	ix := int32(x)
 	iy := int32(y)
 
@@ -74,25 +74,6 @@ func get_gradient(x, y float64) rl.Vector2 {
 		X: float32(math.Cos(angle)),
 		Y: float32(math.Sin(angle)),
 	}
-
-	// xdir := 0
-	// ydir := 0
-	//
-	//	if hash&1 == 0 {
-	//		xdir = 1
-	//	} else {
-	//
-	//		xdir = -1
-	//	}
-	//
-	//	if hash&2 == 0 {
-	//		ydir = 1
-	//	} else {
-	//
-	//		ydir = -1
-	//	}
-	//
-	// return rl.Vector2{X: float32(xdir), Y: float32(ydir)}
 }
 
 func perlin_octaves(x, y float64, n int) float64 {
@@ -101,8 +82,6 @@ func perlin_octaves(x, y float64, n int) float64 {
 	amplitude := 1.0
 	tot_amp := 0.0
 	for range n {
-		//val += (250 * (perlin(x*math.Pow(float64(1+i), 2),
-		//y*math.Pow(float64(1+i), 2)) + 2) / 4) * (1 / math.Pow(float64(1+i), 2))
 		val += amplitude * (0.5 + 0.5*(perlin(x*freq, y*freq)/0.60722))
 		tot_amp += amplitude
 		freq *= 2

@@ -19,35 +19,27 @@ func main() {
 	rl.InitWindow(int32(width), int32(height), "perlin noise")
 	defer rl.CloseWindow()
 
-	scale := 16
+	scale := 8
 	scaled_width := width / scale
 	scaled_height := height / scale
 
-	rl.SetTargetFPS(60)
+	rl.SetTargetFPS(15)
 	min_val := 99999.0
 	max_val := 0.0
+
+	tot_time := 0.0
+	speed := 2.5
 
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()
 
 		rl.ClearBackground(rl.RayWhite)
-		my_string := fmt.Sprintf("FPS: %v", rl.GetFPS())
-
-		//		for ix := range 1600 / 32 {
-		//			for iy := range 1600 / 32 {
-		//				here := rl.Vector2{X: float32(32 * ix), Y: float32(32 * iy)}
-		//				vec := rl.Vector2Scale(get_gradient(float64(32*ix), float64(32*iy)), 12)
-		//				vec = rl.Vector2Add(here, vec)
-		//
-		//				rl.DrawLineV(here, vec, rl.DarkGray)
-		//				rl.DrawCircleV(here, 2.0, rl.DarkGray)
-		//			}
-		//		}
+		my_string := fmt.Sprintf("FPS: %v, TIME: %v", rl.GetFPS(), tot_time)
+		tot_time += speed
 		for ix := range scaled_width {
 			for iy := range scaled_height {
-				//				val := 250 * (perlin(float64(ix*scale), float64(iy*scale)) + 2) / 4
-				val := perlin_octaves(float64(ix*scale), float64(iy*scale), 4)
-				//				fmt.Println(val)
+				val := perlin_octaves3d(float64(ix*scale), float64(iy*scale), tot_time, 4)
+
 				if val < min_val {
 					min_val = val
 				}
@@ -55,7 +47,6 @@ func main() {
 					max_val = val
 				}
 				col := color.RGBA{uint8(val), uint8(val), uint8(val), 255}
-				//				rl.DrawPixel(int32(ix), int32(iy), col)
 				rl.DrawRectangle(int32(ix*scale), int32(iy*scale),
 					int32(scale), int32(scale), col)
 
