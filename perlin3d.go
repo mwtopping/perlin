@@ -98,11 +98,12 @@ func perlin_octaves3d(x, y, z float64, n int) float64 {
 	amplitude := 1.0
 	tot_amp := 0.0
 	for range n {
-		val += amplitude * (0.5 + 0.5*(perlin3d(x*freq, y*freq, z*freq)/0.60722))
+		//val += amplitude * (0.5 + 0.5*(perlin3d(x*freq, y*freq, z*freq)/0.60722))
+		val += amplitude * (0.5 + 0.5*perlin3d(x*freq, y*freq, z*freq)/0.27)
 		tot_amp += amplitude
 		freq *= 2
 		amplitude /= 2
 	}
 
-	return 200 * val / tot_amp
+	return 250 * val / tot_amp
 }
